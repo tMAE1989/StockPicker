@@ -24,7 +24,8 @@ class MarketData:
         """Fetches detailed stock data including volatility."""
         try:
             ticker_obj = yf.Ticker(ticker)
-            hist = ticker_obj.history(period="1mo")
+            # Need 3mo for accurate RSI-14 calculation + volatility
+            hist = ticker_obj.history(period="3mo")
             
             if hist.empty:
                 return None
@@ -49,7 +50,8 @@ class MarketData:
                 "price": current_price,
                 "volume": volume,
                 "volatility": volatility,
-                "history": history_5d
+                "history": history_5d,
+                "full_history": hist # Return full DF for RSI calculation
             }
         except Exception as e:
             print(f"Error fetching data for {ticker}: {e}")
