@@ -21,6 +21,8 @@ class TelegramNotifier:
         
         try:
             response = requests.post(url, json=payload)
+            if response.status_code != 200:
+                print(f"Telegram Error {response.status_code}: {response.text}")
             response.raise_for_status()
             print("Telegram notification sent.")
         except Exception as e:

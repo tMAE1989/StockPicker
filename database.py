@@ -33,6 +33,12 @@ class Database:
         c = conn.cursor()
         date_str = datetime.date.today().isoformat()
         
+        # Check if exists and remove if so (overwrite)
+        c.execute("SELECT id FROM suggestions WHERE date = ? AND ticker = ?", (date_str, suggestion['ticker']))
+        existing = c.fetchone()
+        if existing:
+             c.execute("DELETE FROM suggestions WHERE id = ?", (existing[0],))
+        
         c.execute('''INSERT INTO suggestions (
             date, ticker, direction, suggested_price, projected_price, 
             estimated_stock_win_pct, estimated_option_win_pct

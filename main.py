@@ -81,6 +81,8 @@ def job_evening():
     print("\n--- End of Day Comparison ---")
     msg_lines = ["🌙 *End of Day Results* 🌙", f"_{datetime.date.today().isoformat()}_", ""]
 
+    seen_tickers = set()
+
     for row in suggestions:
         # Adjustment for schema change: row indices might shift if table was recreated.
         # Assuming new schema: 0:id, 1:date, 2:ticker, 3:direction, 4:sugg_price...
@@ -90,6 +92,12 @@ def job_evening():
              continue
 
         ticker = row[2]
+        
+        # Deduplication check
+        if ticker in seen_tickers:
+            continue
+        seen_tickers.add(ticker)
+
         direction = row[3]
         suggested_price = row[4]
         estimated_win = row[6]
