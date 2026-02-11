@@ -2,8 +2,8 @@ name: Evening Results Comparison
 
 on:
   schedule:
-    # Runs at 21:00 UTC daily (22:00 CET)
-    - cron: '0 21 * * *'
+    # Runs at 21:00 UTC daily (22:00 CET) - Mon-Fri only
+    - cron: '0 21 * * 1-5'
   workflow_dispatch:
 
 jobs:

@@ -29,8 +29,11 @@ def job_morning():
     print("Fetching market data and analyzing...")
     filtered_stocks = analyzer.filter_stocks(tickers)
     
+    
     # 3. Estimation & Saving
     db = Database()
+    # Clear any previous runs for today to ensure evening job matches latest logic
+    db.clear_todays_suggestions()
     
     print("\n--- Daily Volatile Stock Suggestions ---")
     msg_lines = ["🚀 *Daily Volatile Stocks* 🚀", f"_{datetime.date.today().isoformat()}_", ""]

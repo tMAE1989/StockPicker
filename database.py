@@ -24,6 +24,15 @@ class Database:
         conn.commit()
         conn.close()
 
+    def clear_todays_suggestions(self):
+        """Deletes all suggestions for the current date. useful for re-runs."""
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+        date_str = datetime.date.today().isoformat()
+        c.execute("DELETE FROM suggestions WHERE date = ?", (date_str,))
+        conn.commit()
+        conn.close()
+
     def save_suggestion(self, suggestion):
         """
         Saves a suggestion to the database.

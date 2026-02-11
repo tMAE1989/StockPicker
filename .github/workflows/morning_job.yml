@@ -2,8 +2,8 @@ name: Morning Stock Suggestion
 
 on:
   schedule:
-    # Runs at 08:30 UTC daily (09:30 CET)
-    - cron: '30 8 * * *'
+    # Runs at 08:30 UTC daily (09:30 CET) - Mon-Fri only
+    - cron: '30 8 * * 1-5'
   workflow_dispatch:
 
 jobs:
