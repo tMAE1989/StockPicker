@@ -13,7 +13,13 @@ class ApeWisdomScraper:
         """
         try:
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+            print(f"DEBUG: Fetching {self.base_url}...")
             response = requests.get(self.base_url, headers=headers)
+            print(f"DEBUG: Status Code: {response.status_code}")
+            
+            if response.status_code != 200:
+                print(f"DEBUG: Response content: {response.text[:200]}")
+            
             response.raise_for_status()
             
             soup = BeautifulSoup(response.content, 'html.parser')
