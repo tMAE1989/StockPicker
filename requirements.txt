@@ -1,0 +1,6 @@
+praw
+yfinance
+schedule
+python-dotenv
+pandas
+requests
