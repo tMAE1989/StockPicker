@@ -30,15 +30,32 @@ class Analyzer:
 
     def determine_direction(self, stock_data):
         """
-        Determines trade direction (Long/Short) based on 5-day trend.
-        Returns: 'Long' or 'Short'
+        Determines trade direction based on volume pressure.
+        - Days where price went UP: volume counts as buying pressure.
+        - Days where price went DOWN: volume counts as selling pressure.
+        If buying volume > selling volume -> Long (bulls in control).
+        If selling volume > buying volume -> Short (bears in control).
         """
-        history = stock_data.get('history', [])
-        if len(history) >= 2:
-            start_price = history[0]
-            end_price = history[-1]
-            if end_price < start_price:
+        hist = stock_data.get('full_history')
+        if hist is not None and len(hist) >= 5:
+            recent = hist.tail(5)
+            
+            buying_volume = 0
+            selling_volume = 0
+            
+            closes = recent['Close'].values
+            volumes = recent['Volume'].values
+            
+            for i in range(1, len(closes)):
+                if closes[i] > closes[i - 1]:
+                    buying_volume += volumes[i]
+                elif closes[i] < closes[i - 1]:
+                    selling_volume += volumes[i]
+                # Flat days are ignored
+            
+            if selling_volume > buying_volume:
                 return 'Short'
+        
         return 'Long'
 
     def estimate_winnings(self, stock_data):
