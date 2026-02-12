@@ -56,15 +56,13 @@ def job_morning():
         print(f"Ticker: {stock['ticker']} ({estimation['direction']})")
         print(f"  Current Price: ${stock['price']:.2f}")
         print(f"  Volatility: {stock['volatility']:.4f}")
-        print(f"  RSI: {stock.get('rsi', 'N/A')}")
         print(f"  Est. Stock Win: {estimation['stock_win_pct']}%")
         print(f"  Est. Option Win (5x): {estimation['option_win_pct']}%")
         print("-" * 30)
 
         # Build message part
-        rsi_val = stock.get('rsi', 50)
         msg_lines.append(f"*{stock['ticker']}* ({estimation['direction']})")
-        msg_lines.append(f"Price: ${stock['price']:.2f} | Vol: {stock['volatility']:.2f} | RSI: {rsi_val:.1f}")
+        msg_lines.append(f"Price: ${stock['price']:.2f} | Vol: {stock['volatility']:.2f}")
         msg_lines.append(f"Est Win: Stock {estimation['stock_win_pct']}% | Opt {estimation['option_win_pct']}%")
         msg_lines.append("---")
 

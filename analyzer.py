@@ -4,16 +4,6 @@ class Analyzer:
     def __init__(self, market_data):
         self.market_data = market_data
 
-    def calculate_rsi(self, series, period=14):
-        """Calculates RSI using simple moving average for simplicity."""
-        delta = series.diff()
-        gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
-        loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
-        
-        rs = gain / loss
-        rsi = 100 - (100 / (1 + rs))
-        return rsi.iloc[-1] if not rsi.empty else 50
-
     def filter_stocks(self, tickers):
         """
         Filters stocks based on VOLUME and Volatility.
@@ -40,26 +30,13 @@ class Analyzer:
 
     def determine_direction(self, stock_data):
         """
-        Determines trade direction based on RSI.
-        RSI > 70 -> Overbought -> Short
-        RSI < 30 -> Oversold -> Long
-        Else -> Neutral (or fallback to trend)
+        Determines trade direction (Long/Short) based on 5-day trend.
+        Returns: 'Long' or 'Short'
         """
-        history = stock_data.get('full_history')
-        if history is not None and not history.empty:
-            rsi = self.calculate_rsi(history['Close'])
-            stock_data['rsi'] = rsi # Store for reporting
-            
-            if rsi > 70:
-                return 'Short'
-            elif rsi < 30:
-                return 'Long'
-            
-        # Fallback to simple trend if RSI is neutral
-        history_list = stock_data.get('history', [])
-        if len(history_list) >= 2:
-            start_price = history_list[0]
-            end_price = history_list[-1]
+        history = stock_data.get('history', [])
+        if len(history) >= 2:
+            start_price = history[0]
+            end_price = history[-1]
             if end_price < start_price:
                 return 'Short'
         return 'Long'
