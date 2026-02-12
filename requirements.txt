@@ -4,3 +4,4 @@ schedule
 python-dotenv
 pandas
 requests
+beautifulsoup4
