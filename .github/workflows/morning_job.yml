@@ -35,10 +35,10 @@ jobs:
       run: python main.py --test-morning
 
     - name: Commit and Push Database
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add volatile_stocks.db
-        git commit -m "Update database with morning suggestions" || echo "No changes to commit"
-        git pull --rebase
-        git push
+        git add volatile_stocks.db || true
+        git diff --staged --quiet && echo "No changes to commit" || (git commit -m "Update database with morning suggestions" && git push https://x-access-token:${GITHUB_TOKEN}@github.com/tMAE1989/StockPicker.git)
