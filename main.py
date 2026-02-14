@@ -12,6 +12,8 @@ import os
 
 # Load env vars
 load_dotenv()
+print(f"DEBUG: TOKEN present in OS: {bool(os.environ.get('TELEGRAM_BOT_TOKEN'))}")
+print(f"DEBUG: CHAT_ID present in OS: {bool(os.environ.get('TELEGRAM_CHAT_ID'))}")
 
 def job_morning():
     print(f"\n--- Running Morning Job: {datetime.datetime.now()} ---")
