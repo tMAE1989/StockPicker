@@ -14,12 +14,17 @@ class Analyzer:
             if data and 'full_history' in data:
                 hist = data['full_history']
                 
-                # Volume Check: Current Volume > 1.5 * 20-day Avg Volume
+                # Volume Check: Current (or last closed) Volume > 1.5 * 20-day Avg Volume
                 if len(hist) >= 20:
-                    avg_vol = hist['Volume'].tail(20).mean()
+                    # Get average of last 20 TRADING days (excluding the very last row if it's current/incomplete)
+                    avg_vol = hist['Volume'].iloc[-21:-1].mean()
+                    
+                    # Current volume - if we are before open, this might be 0 or pre-market.
+                    # We use the latest available volume.
                     current_vol = data['volume']
                     
                     if current_vol < 1.5 * avg_vol:
+                        print(f"DEBUG: Skipping {ticker} - Volume ({current_vol:.0f}) below 1.5x average ({avg_vol:.0f})")
                         continue # Skip if volume is not high enough
                 
                 valid_stocks.append(data)
