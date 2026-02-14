@@ -67,10 +67,13 @@ def job_morning():
         msg_lines.append("---")
 
     # Send Telegram
-    if msg_lines:
-        notifier = TelegramNotifier()
+    notifier = TelegramNotifier()
+    if len(filtered_stocks) > 0:
         full_msg = "\n".join(msg_lines)
         notifier.send_message(full_msg)
+    else:
+        print("No stocks passed the filters today.")
+        notifier.send_message(f"📉 *Stock Picker Update*\n_{datetime.date.today().isoformat()}_\n\nNo trending stocks met the 1.5x volume threshold today.")
 
 def job_evening():
     print(f"\n--- Running Evening Job: {datetime.datetime.now()} ---")

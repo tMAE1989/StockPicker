@@ -23,8 +23,8 @@ class Analyzer:
                     # We use the latest available volume.
                     current_vol = data['volume']
                     
-                    if current_vol < 1.5 * avg_vol:
-                        print(f"DEBUG: Skipping {ticker} - Volume ({current_vol:.0f}) below 1.5x average ({avg_vol:.0f})")
+                    if current_vol < 1.3 * avg_vol:
+                        print(f"DEBUG: Skipping {ticker} - Volume ({current_vol:.0f}) below 1.3x average ({avg_vol:.0f})")
                         continue # Skip if volume is not high enough
                 
                 valid_stocks.append(data)
